@@ -1,0 +1,18 @@
+-- Báo cáo hiệu quả của project thông qua các chỉ số Cost, Impressions, Clicks, Conversions, Video Views, CR, CTR, CPC, CPM
+WITH Report AS(
+SELECT Project,
+Totalcost = sum(Cost),
+Totalimpressions=sum(impressions),
+TotalClicks=sum(Clicks),
+Totalconversion=sum(Conversions),
+TotalVideo_views=sum(video_views),
+AVGCR = ROUND(AVG(CR),2)
+FROM GA_0001
+GROUP BY Project)
+
+SELECT *,
+CTR = ROUND(ISNULL(Totalconversion/NULLIF(TotalClicks,0),0),2),
+CPC = ROUND(ISNULL(TotalClicks/NULLIF(Totalcost,0),0),2),
+CPM = ROUND(ISNULL(Totalimpressions/NULLIF(Totalcost,0),0),2)
+FROM Report
+
